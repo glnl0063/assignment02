@@ -2,7 +2,15 @@
 import React, {Component} from 'react';
 
 // import the stylesheet, text, view from react native
-import { StyleSheet, Text, View, Image, ScrollView} from 'react-native';
+import { Platform, NativeModules, Animated, StyleSheet, Text, View, Image, ScrollView} from 'react-native';
+
+
+const { UIManager } = NativeModules;
+if (Platform.OS === 'android') {
+ if (UIManager.setLayoutAnimationEnabledExperimental) {
+   UIManager.setLayoutAnimationEnabledExperimental(true);
+ }
+}
 
 // import Pokemon data from the custom JSON I made
 import PokemonData from "./starter-pokemon.json"; 
@@ -33,7 +41,7 @@ export default class App extends Component {
           <Text style={ViewContainerStyle.title}>Starter Pokemon</Text>
         </View>
 
-        <View style={ViewContainerStyle.pokemonContainer}>
+        <Animated.View style={ViewContainerStyle.pokemonContainer}>
         {
           this.state.pokemons.map(item =>
             <PokemonCard 
@@ -44,7 +52,7 @@ export default class App extends Component {
             />
           )
         }          
-        </View>
+        </Animated.View>
 
         <View style={ViewContainerStyle.footerContainer}>
           <Text style={ViewContainerStyle.footer}>© Images & Content By The Pokemon Company. Used for Education Purposes.</Text>
